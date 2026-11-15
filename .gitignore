@@ -1,0 +1,27 @@
+.DS_Store
+DerivedData/
+.build/
+build/
+.swiftpm/
+*.xcuserstate
+xcuserdata/
+*.xcarchive/
+*.ipa
+*.dSYM/
+*.dSYM.zip
+
+# Local signing material and credentials
+*.mobileprovision
+*.provisionprofile
+*.p12
+*.p8
+*.pem
+*.key
+*.local.xcconfig
+.env
+.env.*
+!.env.example
+
+# Local agent metadata
+.codex/
+.agents/
