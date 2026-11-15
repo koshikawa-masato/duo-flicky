@@ -66,6 +66,37 @@ final class KeyboardViewController: UIInputViewController {
         if model.showsGlobe != needsInputModeSwitchKey {
             model.showsGlobe = needsInputModeSwitchKey
         }
+        updateDebugInfo()
+    }
+
+    // Diagnostic (build 7): find a signal that distinguishes the
+    // presentations where guide drawing above the frame renders
+    // (full-screen app) from those where it is clipped (Split View),
+    // so the guide can float in the first and stay inside in the
+    // second. Candidates: window class, headroom between the window
+    // top and the input view top, size classes, ancestor clipping.
+    private func updateDebugInfo() {
+        guard let window = view.window else { return }
+        let frameInWindow = view.convert(view.bounds, to: nil)
+        var clips: [String] = []
+        var ancestor = view.superview
+        while let current = ancestor {
+            clips.append(current.clipsToBounds ? "1" : "0")
+            ancestor = current.superview
+        }
+        func sizeClass(_ value: UIUserInterfaceSizeClass) -> String {
+            value == .regular ? "R" : value == .compact ? "C" : "?"
+        }
+        let text = String(
+            format: "%@ head=%.0f sc=%@/%@ clip=%@ win=%.0fx%.0f",
+            String(describing: type(of: window)),
+            frameInWindow.minY,
+            sizeClass(traitCollection.horizontalSizeClass),
+            sizeClass(traitCollection.verticalSizeClass),
+            clips.joined(),
+            window.frame.width, window.frame.height
+        )
+        if model.debugText != text { model.debugText = text }
     }
 
     override func textDidChange(_ textInput: UITextInput?) {
@@ -272,6 +303,7 @@ private final class BoardModel {
     var showsTopGuide = false
     var isComposing = false
     var isAlphabet = false
+    var debugText = ""
     var spikePlacement: SpikePlacement = .full
     var candidates: [String] = []
     var highlightedCandidate: String?
@@ -291,6 +323,7 @@ private struct ExtensionBoard: View {
             highlightedCandidate: model.highlightedCandidate,
             globe: model.showsGlobe ? AnyView(GlobeButton(controller: controller)) : nil,
             showsTopGuide: model.showsTopGuide,
+            debugText: model.debugText,
             onTopGuideChange: { controller?.setTopGuideVisible($0) },
             placement: model.spikePlacement,
             onPlacementCycle: { controller?.cycleSpikePlacement() },

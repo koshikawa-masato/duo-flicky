@@ -40,6 +40,7 @@ struct FlickBoard: View {
     let highlightedCandidate: String?
     var globe: AnyView? = nil
     var showsTopGuide = false
+    var debugText = ""
     var onTopGuideChange: (Bool) -> Void = { _ in }
     var placement: SpikePlacement = .full
     var onPlacementCycle: () -> Void = {}
@@ -88,6 +89,17 @@ struct FlickBoard: View {
             }
         }
         .onDisappear { onTopGuideChange(false) }
+        .overlay(alignment: .topLeading) {
+            // Diagnostic readout (build 7, temporary).
+            if !debugText.isEmpty {
+                Text(debugText)
+                    .font(.system(size: 8, design: .monospaced))
+                    .foregroundStyle(.red)
+                    .padding(2)
+                    .background(.black.opacity(0.55))
+                    .allowsHitTesting(false)
+            }
+        }
     }
 
     private var innerBoard: some View {
