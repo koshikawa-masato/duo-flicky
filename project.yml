@@ -5,6 +5,8 @@ options:
 settings:
   base:
     SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: 8JN36X5T3B
+    CODE_SIGN_STYLE: Automatic
 packages:
   AzooKeyKanaKanjiConverter:
     url: https://github.com/azooKey/AzooKeyKanaKanjiConverter
