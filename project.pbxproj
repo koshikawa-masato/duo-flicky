@@ -1,0 +1,500 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E6FB603D0E7542FFB9135672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88ABD8B1C49742A697E08E49 /* Assets.xcassets */; };
+		57B0B6A8C022BE203C0796ED /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DE1C3162B9C8D5C4E3971 /* KeyboardViewController.swift */; };
+		74E5962ED983D15645534E85 /* DuoFlickyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A37F9433F081DEE74BD63C /* DuoFlickyApp.swift */; };
+		A14038AB45C4BB48FC6F61DA /* DuoFlickyKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A2655D72348822D7D04CA8C5 /* DuoFlickyKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BCCEAD6BAF6C392FCF7CA0AE /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D457AD8AA5660BF88E2F574 /* KeyboardLayout.swift */; };
+		D8664D5697D30334B2EE7248 /* KanaPrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7226775A90BADC94D58EEE /* KanaPrediction.swift */; };
+		DD3E86736676CBE7F49F9042 /* FlickBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD493B96C3C906B13B12678D /* FlickBoard.swift */; };
+		DF2D45027AA57EC09B1CAF84 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D457AD8AA5660BF88E2F574 /* KeyboardLayout.swift */; };
+		E09459935F4EAC3C1513F809 /* FlickBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD493B96C3C906B13B12678D /* FlickBoard.swift */; };
+		F44291812BD00097B0973E32 /* KanaKanjiConverterModuleWithDefaultDictionary in Frameworks */ = {isa = PBXBuildFile; productRef = 1A261175CE28913825D29706 /* KanaKanjiConverterModuleWithDefaultDictionary */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		08C32FD6AA7DCD0587381BD2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 079DB2A685AFA544670F9106 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5F74F2B67D29A0E2E740F1E6;
+			remoteInfo = DuoFlickyKeyboard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DE7CF776CDD60149046F39C2 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A14038AB45C4BB48FC6F61DA /* DuoFlickyKeyboard.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		88ABD8B1C49742A697E08E49 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		119DE1C3162B9C8D5C4E3971 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		7D457AD8AA5660BF88E2F574 /* KeyboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
+		A2655D72348822D7D04CA8C5 /* DuoFlickyKeyboard.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DuoFlickyKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD493B96C3C906B13B12678D /* FlickBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickBoard.swift; sourceTree = "<group>"; };
+		C51735E03D3F447991878617 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C714B860BF56805A617538B1 /* DuoFlicky.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DuoFlicky.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE7226775A90BADC94D58EEE /* KanaPrediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanaPrediction.swift; sourceTree = "<group>"; };
+		E5A37F9433F081DEE74BD63C /* DuoFlickyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoFlickyApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3FEC8FD997329958346CBF4F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F44291812BD00097B0973E32 /* KanaKanjiConverterModuleWithDefaultDictionary in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		05268AEC1C445C9909904B54 /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				C51735E03D3F447991878617 /* Info.plist */,
+				CE7226775A90BADC94D58EEE /* KanaPrediction.swift */,
+				119DE1C3162B9C8D5C4E3971 /* KeyboardViewController.swift */,
+			);
+			path = Keyboard;
+			sourceTree = "<group>";
+		};
+		513CE0E8B6CDD484D153B934 = {
+			isa = PBXGroup;
+			children = (
+				B751F261F0087129D31F9637 /* App */,
+				05268AEC1C445C9909904B54 /* Keyboard */,
+				8706C7FCA3214DF8A4ADC171 /* Shared */,
+				737A53D0B3AF04C1694E6926 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		737A53D0B3AF04C1694E6926 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C714B860BF56805A617538B1 /* DuoFlicky.app */,
+				A2655D72348822D7D04CA8C5 /* DuoFlickyKeyboard.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8706C7FCA3214DF8A4ADC171 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				AD493B96C3C906B13B12678D /* FlickBoard.swift */,
+				7D457AD8AA5660BF88E2F574 /* KeyboardLayout.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		B751F261F0087129D31F9637 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E5A37F9433F081DEE74BD63C /* DuoFlickyApp.swift */,
+				88ABD8B1C49742A697E08E49 /* Assets.xcassets */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5F74F2B67D29A0E2E740F1E6 /* DuoFlickyKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC54E9CF277FA90DEC86B779 /* Build configuration list for PBXNativeTarget "DuoFlickyKeyboard" */;
+			buildPhases = (
+				980EA62E135CA66E0E1D56A1 /* Sources */,
+				3FEC8FD997329958346CBF4F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DuoFlickyKeyboard;
+			packageProductDependencies = (
+				1A261175CE28913825D29706 /* KanaKanjiConverterModuleWithDefaultDictionary */,
+			);
+			productName = DuoFlickyKeyboard;
+			productReference = A2655D72348822D7D04CA8C5 /* DuoFlickyKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		97EC2999750BA4C384FF85F7 /* DuoFlicky */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ADDA2EAC98BB28FBE64ECC28 /* Build configuration list for PBXNativeTarget "DuoFlicky" */;
+			buildPhases = (
+				81E67EEB9579AEEE76E3C57D /* Sources */,
+				4EE0268C3B6249739F324B12 /* Resources */,
+				DE7CF776CDD60149046F39C2 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8F857F1C9F7BF39B452756FE /* PBXTargetDependency */,
+			);
+			name = DuoFlicky;
+			packageProductDependencies = (
+			);
+			productName = DuoFlicky;
+			productReference = C714B860BF56805A617538B1 /* DuoFlicky.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		079DB2A685AFA544670F9106 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = 666650A68E24AEBAEAA430CC /* Build configuration list for PBXProject "DuoFlicky" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 513CE0E8B6CDD484D153B934;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				457634417C6510DEF8351360 /* XCRemoteSwiftPackageReference "AzooKeyKanaKanjiConverter" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				97EC2999750BA4C384FF85F7 /* DuoFlicky */,
+				5F74F2B67D29A0E2E740F1E6 /* DuoFlickyKeyboard */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4EE0268C3B6249739F324B12 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6FB603D0E7542FFB9135672 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		81E67EEB9579AEEE76E3C57D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74E5962ED983D15645534E85 /* DuoFlickyApp.swift in Sources */,
+				E09459935F4EAC3C1513F809 /* FlickBoard.swift in Sources */,
+				DF2D45027AA57EC09B1CAF84 /* KeyboardLayout.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		980EA62E135CA66E0E1D56A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD3E86736676CBE7F49F9042 /* FlickBoard.swift in Sources */,
+				D8664D5697D30334B2EE7248 /* KanaPrediction.swift in Sources */,
+				BCCEAD6BAF6C392FCF7CA0AE /* KeyboardLayout.swift in Sources */,
+				57B0B6A8C022BE203C0796ED /* KeyboardViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8F857F1C9F7BF39B452756FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5F74F2B67D29A0E2E740F1E6 /* DuoFlickyKeyboard */;
+			targetProxy = 08C32FD6AA7DCD0587381BD2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		153152D668854D3D91A82CF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8JN36X5T3B;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Duo Flicky";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.duoflicky.app;
+				PROVISIONING_PROFILE_SPECIFIER = "$(DUO_FLICKY_PROFILE)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		3197370B30190C29DA52CFD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8JN36X5T3B;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Duo Flicky";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.duoflicky.app;
+				PROVISIONING_PROFILE_SPECIFIER = "$(DUO_FLICKY_PROFILE)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		58BE075FB1CAD81E8F6C7FF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8JN36X5T3B;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				INFOPLIST_FILE = Keyboard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = jp.duoflicky.app.keyboard;
+				PROVISIONING_PROFILE_SPECIFIER = "$(DUO_FLICKY_PROFILE)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		83238E0C02579CC81E69C047 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8JN36X5T3B;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		97DC725700EDE7A7F8CFF8E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8JN36X5T3B;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		E6A4F065CBE3E7499DA48B6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8JN36X5T3B;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				INFOPLIST_FILE = Keyboard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = jp.duoflicky.app.keyboard;
+				PROVISIONING_PROFILE_SPECIFIER = "$(DUO_FLICKY_PROFILE)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		666650A68E24AEBAEAA430CC /* Build configuration list for PBXProject "DuoFlicky" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97DC725700EDE7A7F8CFF8E1 /* Debug */,
+				83238E0C02579CC81E69C047 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		ADDA2EAC98BB28FBE64ECC28 /* Build configuration list for PBXNativeTarget "DuoFlicky" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3197370B30190C29DA52CFD8 /* Debug */,
+				153152D668854D3D91A82CF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DC54E9CF277FA90DEC86B779 /* Build configuration list for PBXNativeTarget "DuoFlickyKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6A4F065CBE3E7499DA48B6C /* Debug */,
+				58BE075FB1CAD81E8F6C7FF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		457634417C6510DEF8351360 /* XCRemoteSwiftPackageReference "AzooKeyKanaKanjiConverter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/azooKey/AzooKeyKanaKanjiConverter";
+			requirement = {
+				kind = exactVersion;
+				version = 0.11.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A261175CE28913825D29706 /* KanaKanjiConverterModuleWithDefaultDictionary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 457634417C6510DEF8351360 /* XCRemoteSwiftPackageReference "AzooKeyKanaKanjiConverter" */;
+			productName = KanaKanjiConverterModuleWithDefaultDictionary;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 079DB2A685AFA544670F9106 /* Project object */;
+}

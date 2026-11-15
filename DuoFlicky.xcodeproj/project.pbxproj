@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E6FB603D0E7542FFB9135672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88ABD8B1C49742A697E08E49 /* Assets.xcassets */; };
 		57B0B6A8C022BE203C0796ED /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DE1C3162B9C8D5C4E3971 /* KeyboardViewController.swift */; };
 		74E5962ED983D15645534E85 /* DuoFlickyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A37F9433F081DEE74BD63C /* DuoFlickyApp.swift */; };
 		A14038AB45C4BB48FC6F61DA /* DuoFlickyKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A2655D72348822D7D04CA8C5 /* DuoFlickyKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -43,6 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		88ABD8B1C49742A697E08E49 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		119DE1C3162B9C8D5C4E3971 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		7D457AD8AA5660BF88E2F574 /* KeyboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
 		A2655D72348822D7D04CA8C5 /* DuoFlickyKeyboard.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DuoFlickyKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				E5A37F9433F081DEE74BD63C /* DuoFlickyApp.swift */,
+				88ABD8B1C49742A697E08E49 /* Assets.xcassets */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 			buildConfigurationList = ADDA2EAC98BB28FBE64ECC28 /* Build configuration list for PBXNativeTarget "DuoFlicky" */;
 			buildPhases = (
 				81E67EEB9579AEEE76E3C57D /* Sources */,
+				4EE0268C3B6249739F324B12 /* Resources */,
 				DE7CF776CDD60149046F39C2 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -183,6 +187,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4EE0268C3B6249739F324B12 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6FB603D0E7542FFB9135672 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		81E67EEB9579AEEE76E3C57D /* Sources */ = {
