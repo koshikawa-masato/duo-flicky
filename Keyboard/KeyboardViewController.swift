@@ -69,35 +69,28 @@ final class KeyboardViewController: UIInputViewController {
         updateDebugInfo()
     }
 
-    // Diagnostic (build 7): find a signal that distinguishes the
+    // Diagnostic (builds 7-9): find a signal that distinguishes the
     // presentations where guide drawing above the frame renders
     // (full-screen app) from those where it is clipped (Split View),
     // so the guide can float in the first and stay inside in the
-    // second. Candidates: window class, headroom between the window
-    // top and the input view top, size classes, ancestor clipping.
+    // second. Build 8 result: window class (_UIHostedWindow),
+    // headroom, size classes, ancestor clipping and window origin
+    // were ALL identical in both presentations. Remaining
+    // candidates: the window size and the scene coordinate space
+    // (the view's frame within the scene).
     private func updateDebugInfo() {
         guard let window = view.window else { return }
-        let frameInWindow = view.convert(view.bounds, to: nil)
-        var clips: [String] = []
-        var ancestor = view.superview
-        while let current = ancestor {
-            clips.append(current.clipsToBounds ? "1" : "0")
-            ancestor = current.superview
-        }
-        func sizeClass(_ value: UIUserInterfaceSizeClass) -> String {
-            value == .regular ? "R" : value == .compact ? "C" : "?"
-        }
-        var windowName = String(describing: type(of: window))
-        if windowName.hasPrefix("UI") { windowName = String(windowName.dropFirst(2)) }
-        if windowName.count > 14 { windowName = String(windowName.prefix(14)) }
+        let scene = window.windowScene
+        let sceneBounds = scene?.coordinateSpace.bounds ?? .zero
+        let viewInScene = scene.map {
+            $0.coordinateSpace.convert(view.bounds, from: view.coordinateSpace)
+        } ?? .zero
         let text = String(
-            format: "W:%@ H:%.0f\nS:%@/%@ C:%@ O:%.0f,%.0f",
-            windowName,
-            frameInWindow.minY,
-            sizeClass(traitCollection.horizontalSizeClass),
-            sizeClass(traitCollection.verticalSizeClass),
-            clips.joined(),
-            window.frame.origin.x, window.frame.origin.y
+            format: "SZ:%.0fx%.0f SB:%.0fx%.0f\nSV:%.0f,%.0f %.0fx%.0f",
+            window.frame.width, window.frame.height,
+            sceneBounds.width, sceneBounds.height,
+            viewInScene.origin.x, viewInScene.origin.y,
+            viewInScene.width, viewInScene.height
         )
         if model.debugText != text { model.debugText = text }
     }
