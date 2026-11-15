@@ -87,14 +87,17 @@ final class KeyboardViewController: UIInputViewController {
         func sizeClass(_ value: UIUserInterfaceSizeClass) -> String {
             value == .regular ? "R" : value == .compact ? "C" : "?"
         }
+        var windowName = String(describing: type(of: window))
+        if windowName.hasPrefix("UI") { windowName = String(windowName.dropFirst(2)) }
+        if windowName.count > 14 { windowName = String(windowName.prefix(14)) }
         let text = String(
-            format: "%@ head=%.0f sc=%@/%@ clip=%@ win=%.0fx%.0f",
-            String(describing: type(of: window)),
+            format: "W:%@ H:%.0f\nS:%@/%@ C:%@ O:%.0f,%.0f",
+            windowName,
             frameInWindow.minY,
             sizeClass(traitCollection.horizontalSizeClass),
             sizeClass(traitCollection.verticalSizeClass),
             clips.joined(),
-            window.frame.width, window.frame.height
+            window.frame.origin.x, window.frame.origin.y
         )
         if model.debugText != text { model.debugText = text }
     }

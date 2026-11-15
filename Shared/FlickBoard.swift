@@ -90,13 +90,15 @@ struct FlickBoard: View {
         }
         .onDisappear { onTopGuideChange(false) }
         .overlay(alignment: .topLeading) {
-            // Diagnostic readout (build 7, temporary).
+            // Diagnostic readout (builds 7-8, temporary). Large on
+            // purpose: the build 7 readout was illegible in the
+            // downscaled screenshots the user sends.
             if !debugText.isEmpty {
                 Text(debugText)
-                    .font(.system(size: 8, design: .monospaced))
-                    .foregroundStyle(.red)
-                    .padding(2)
-                    .background(.black.opacity(0.55))
+                    .font(.system(size: 17, weight: .bold, design: .monospaced))
+                    .foregroundStyle(.yellow)
+                    .padding(4)
+                    .background(.black)
                     .allowsHitTesting(false)
             }
         }
