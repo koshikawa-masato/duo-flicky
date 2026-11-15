@@ -25,7 +25,7 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         PROVISIONING_PROFILE_SPECIFIER: $(DUO_FLICKY_PROFILE)
         GENERATE_INFOPLIST_FILE: YES
-        CURRENT_PROJECT_VERSION: "3"
+        CURRENT_PROJECT_VERSION: "4"
         MARKETING_VERSION: "0.1.0"
         INFOPLIST_KEY_CFBundleDisplayName: Duo Flicky
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: "NO"
@@ -50,7 +50,7 @@ targets:
       properties:
         CFBundleDisplayName: Duo Flicky
         CFBundleShortVersionString: "0.1.0"
-        CFBundleVersion: "3"
+        CFBundleVersion: "4"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.keyboard-service
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController

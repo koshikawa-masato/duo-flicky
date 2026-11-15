@@ -7,13 +7,14 @@ struct FlickBoard: View {
     private static let gap: CGFloat = 5
     static let height = headerHeight + 4 * rowHeight + 4 * gap + 2 * padding
 
-    // The top-row guide room is reserved at all times in landscape so
-    // the keyboard frame never grows (and the keys never jump) in the
-    // middle of a flick gesture.
-    private static let landscapeGuideRoom: CGFloat = 43
+    // How far above the board's top edge flick guides may draw in
+    // landscape, where the top row sits flush with the frame. The
+    // frame itself never resizes and reserves no margin for this;
+    // the guide simply overlaps the app above the keyboard.
+    private static let landscapeGuideOverflow: CGFloat = 54
 
     static func innerHeight(landscape: Bool, showsTopGuide: Bool = false) -> CGFloat {
-        landscape ? 225 + landscapeGuideRoom : 286
+        landscape ? 225 : 286
     }
 
     // Phase 0 spike: in half placement the candidate panel folds into a
@@ -42,8 +43,13 @@ struct FlickBoard: View {
     var onPlacementCycle: () -> Void = {}
     let perform: (KeyAction) -> Void
 
-    private var topGuideInset: CGFloat {
-        isInner && isLandscape ? Self.landscapeGuideRoom : 0
+    // Drawing bounds for flick guides. In landscape they extend above
+    // the board so the top row's up petal and bubble have somewhere to
+    // go without the frame moving or carrying a permanent margin.
+    private func guideDrawBounds(in size: CGSize) -> CGRect {
+        guard isInner && isLandscape else { return CGRect(origin: .zero, size: size) }
+        let overflow = Self.landscapeGuideOverflow
+        return CGRect(x: 0, y: -overflow, width: size.width, height: size.height + overflow)
     }
 
     var body: some View {
@@ -66,9 +72,10 @@ struct FlickBoard: View {
                     Color(uiColor: .systemBackground).opacity(0.48)
                 }
                 ForEach(guides) { guide in
-                    // The guide room is always reserved, so petals can
-                    // draw immediately without waiting for a resize.
-                    FlickGuide(guide: guide, keyFrame: geometry[guide.anchor], size: geometry.size)
+                    FlickGuide(
+                        guide: guide, keyFrame: geometry[guide.anchor],
+                        bounds: guideDrawBounds(in: geometry.size)
+                    )
                 }
             }
             .allowsHitTesting(false)
@@ -82,7 +89,7 @@ struct FlickBoard: View {
 
     private var innerBoard: some View {
         GeometryReader { geometry in
-            let top: CGFloat = isLandscape ? 15 + topGuideInset : 7
+            let top: CGFloat = isLandscape ? 15 : 7
             let horizontalInset: CGFloat = isLandscape ? 7 : 17
             let bottom: CGFloat = isLandscape ? 0 : 4
             let height = Self.boardHeight(
@@ -441,7 +448,7 @@ private struct FlickGuidePreference: PreferenceKey {
 private struct FlickGuide: View {
     let guide: FlickGuideState
     let keyFrame: CGRect
-    let size: CGSize
+    let bounds: CGRect
 
     var body: some View {
         if guide.isHeld {
@@ -453,7 +460,7 @@ private struct FlickGuide: View {
 
     private var flickBubble: some View {
         let layout = FlickBubbleLayout(
-            key: keyFrame, bounds: CGRect(origin: .zero, size: size), direction: guide.selection
+            key: keyFrame, bounds: bounds, direction: guide.selection
         )
         let body = layout.body
         let fill = Color(uiColor: .systemGray4)
@@ -518,7 +525,7 @@ private struct FlickGuide: View {
             dx: offset.width * (keyFrame.width + 4),
             dy: offset.height * (keyFrame.height + 4)
         )
-        return proposed.intersection(CGRect(origin: .zero, size: size))
+        return proposed.intersection(bounds)
     }
 
     private func offset(for direction: FlickDirection) -> CGSize {
