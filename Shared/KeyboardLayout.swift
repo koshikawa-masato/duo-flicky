@@ -131,6 +131,34 @@ enum KanaModifier {
     }
 }
 
+/// Phase 0 spike: which part of the keyboard extension's full-width area
+/// actually draws keys. The other side is left without any rendered
+/// surface so the real device can tell us whether the app underneath
+/// shows (and receives touches) through it in Split View.
+enum SpikePlacement: String, CaseIterable {
+    case full
+    case leftHalf
+    case rightHalf
+
+    var next: SpikePlacement {
+        switch self {
+        case .full: .leftHalf
+        case .leftHalf: .rightHalf
+        case .rightHalf: .full
+        }
+    }
+
+    var label: String {
+        switch self {
+        case .full: "全幅"
+        case .leftHalf: "左半"
+        case .rightHalf: "右半"
+        }
+    }
+
+    var isHalf: Bool { self != .full }
+}
+
 enum DuoDisplay {
     static func isInner(nativeSize: CGSize) -> Bool {
         let shortSide = min(nativeSize.width, nativeSize.height)

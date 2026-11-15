@@ -14,6 +14,19 @@ struct FlickBoard: View {
         landscape ? 225 + (showsTopGuide ? landscapeGuideRoom : 0) : 286
     }
 
+    // Phase 0 spike: in half placement the candidate panel folds into a
+    // one-row header (like portrait), which needs this much extra height
+    // in landscape.
+    static let spikeHeaderHeight: CGFloat = 46
+
+    static func boardHeight(
+        isInner: Bool, isLandscape: Bool, showsTopGuide: Bool, placement: SpikePlacement
+    ) -> CGFloat {
+        guard isInner else { return height }
+        return innerHeight(landscape: isLandscape, showsTopGuide: showsTopGuide)
+            + (placement.isHalf && isLandscape ? spikeHeaderHeight : 0)
+    }
+
     let isInner: Bool
     let isLandscape: Bool
     let isComposing: Bool
@@ -23,6 +36,8 @@ struct FlickBoard: View {
     var globe: AnyView? = nil
     var showsTopGuide = false
     var onTopGuideChange: (Bool) -> Void = { _ in }
+    var placement: SpikePlacement = .full
+    var onPlacementCycle: () -> Void = {}
     let perform: (KeyAction) -> Void
 
     private var topGuideInset: CGFloat {
@@ -38,7 +53,10 @@ struct FlickBoard: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .frame(height: isInner ? Self.innerHeight(landscape: isLandscape, showsTopGuide: showsTopGuide) : Self.height)
+        .frame(height: Self.boardHeight(
+            isInner: isInner, isLandscape: isLandscape,
+            showsTopGuide: showsTopGuide, placement: placement
+        ))
         .overlayPreferenceValue(FlickGuidePreference.self) { guides in
             let needsTopRoom = isInner && isLandscape && guides.contains(where: \.needsTopRoom)
             GeometryReader { geometry in
@@ -67,35 +85,54 @@ struct FlickBoard: View {
             let top: CGFloat = isLandscape ? 15 + topGuideInset : 7
             let horizontalInset: CGFloat = isLandscape ? 7 : 17
             let bottom: CGFloat = isLandscape ? 0 : 4
-            let height = Self.innerHeight(landscape: isLandscape, showsTopGuide: showsTopGuide)
-            let header: CGFloat = isLandscape ? 0 : 46
+            let height = Self.boardHeight(
+                isInner: true, isLandscape: isLandscape,
+                showsTopGuide: showsTopGuide, placement: placement
+            )
+            // Half placement folds the candidates into a header row in
+            // both orientations, like the portrait layout already does.
+            let header: CGFloat = placement.isHalf || !isLandscape ? Self.spikeHeaderHeight : 0
             let rowHeight = (height - top - bottom - header - 3 * Self.gap) / 4
-            let width = max(0, geometry.size.width - 2 * horizontalInset)
-            let keyWidth = isLandscape
-                ? max(0, (width - 5 * Self.gap) / 9.2)
-                : max(0, (width - 4 * Self.gap) / 5)
+            let fullWidth = max(0, geometry.size.width - 2 * horizontalInset)
+            // Split View is 50/50 with a ~13pt divider between the panes.
+            let width = placement.isHalf ? max(0, (fullWidth - 13) / 2) : fullWidth
+            let keyWidth = placement.isHalf
+                ? max(0, (width - 4 * Self.gap) / 5)
+                : (isLandscape
+                    ? max(0, (width - 5 * Self.gap) / 9.2)
+                    : max(0, (width - 4 * Self.gap) / 5))
 
-            VStack(spacing: 0) {
-                if !isLandscape {
-                    candidateRow(candidates[...])
-                        .frame(height: header)
-                }
-                HStack(spacing: Self.gap) {
-                    controls(rowHeight: rowHeight)
-                        .frame(width: keyWidth)
-                    kanaKeys(rowHeight: rowHeight)
-                        .frame(width: 3 * keyWidth + 2 * Self.gap)
-                    if isLandscape {
-                        candidatePanel(rowHeight: rowHeight)
-                            .frame(maxWidth: .infinity)
+            // The side without keys gets no rendered surface at all
+            // (a plain Spacer), which is the point of the spike: whether
+            // the app underneath shows and receives touches there is
+            // exactly what the real-device check has to answer.
+            HStack(spacing: 0) {
+                if placement == .rightHalf { Spacer(minLength: 0) }
+                VStack(spacing: 0) {
+                    if header > 0 {
+                        candidateRow(candidates[...])
+                            .frame(height: header)
                     }
-                    utilityKeys(rowHeight: rowHeight)
-                        .frame(width: keyWidth)
+                    HStack(spacing: Self.gap) {
+                        controls(rowHeight: rowHeight)
+                            .frame(width: keyWidth)
+                        kanaKeys(rowHeight: rowHeight)
+                            .frame(width: 3 * keyWidth + 2 * Self.gap)
+                        if isLandscape && !placement.isHalf {
+                            candidatePanel(rowHeight: rowHeight)
+                                .frame(maxWidth: .infinity)
+                        }
+                        utilityKeys(rowHeight: rowHeight)
+                            .frame(width: keyWidth)
+                    }
+                    .frame(height: height - top - bottom - header)
                 }
-                .frame(height: height - top - bottom - header)
+                .frame(width: placement.isHalf ? width + 2 * horizontalInset : nil)
+                .padding(.horizontal, horizontalInset)
+                .padding(.top, top)
+                if placement == .leftHalf { Spacer(minLength: 0) }
             }
-            .padding(.horizontal, horizontalInset)
-            .padding(.top, top)
+            .frame(maxWidth: .infinity, alignment: placement == .rightHalf ? .trailing : .leading)
         }
     }
 
@@ -107,13 +144,27 @@ struct FlickBoard: View {
                 .frame(height: rowHeight)
             actionKey(isAlphabet ? "かな" : "ABC", action: .toggleAlphabet)
                 .frame(height: rowHeight)
-            if let globe {
-                globe
-                    .frame(maxWidth: .infinity)
-                    .frame(height: rowHeight)
-                    .background(keyColor, in: .rect(cornerRadius: 10))
-            } else {
-                Color.clear.frame(height: rowHeight)
+            HStack(spacing: Self.gap) {
+                if let globe {
+                    globe
+                        .frame(maxWidth: .infinity)
+                        .frame(height: rowHeight)
+                        .background(keyColor, in: .rect(cornerRadius: 10))
+                } else {
+                    Color.clear.frame(height: rowHeight)
+                }
+                // Phase 0 spike: cycle 全幅 → 左半 → 右半 → 全幅.
+                Button {
+                    onPlacementCycle()
+                } label: {
+                    Text(placement.label)
+                        .font(.caption2)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(keyColor, in: .rect(cornerRadius: 10))
+                }
+                .buttonStyle(.plain)
+                .frame(height: rowHeight)
+                .accessibilityLabel("キーボード配置を切り替え、現在は\(placement.label)")
             }
         }
     }

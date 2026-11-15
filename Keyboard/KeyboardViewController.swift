@@ -15,6 +15,19 @@ final class KeyboardViewController: UIInputViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if let raw = UserDefaults.standard.string(forKey: "spikePlacement"),
+           let saved = SpikePlacement(rawValue: raw) {
+            model.spikePlacement = saved
+        }
+
+        // Phase 0 spike: clear every background the extension controls,
+        // so any opaque layer left on the empty half is the system's,
+        // which is what the spike is meant to find out.
+        view.backgroundColor = .clear
+        if let inputView = view as? UIInputView {
+            inputView.backgroundColor = .clear
+        }
+
         let board = ExtensionBoard(model: model, controller: self)
         let host = UIHostingController(rootView: board)
         host.sizingOptions = []
@@ -78,10 +91,17 @@ final class KeyboardViewController: UIInputViewController {
     }
 
     private func updateBoardHeight() {
-        let height = model.isInner
-            ? FlickBoard.innerHeight(landscape: model.isLandscape, showsTopGuide: model.showsTopGuide)
-            : FlickBoard.height
+        let height = FlickBoard.boardHeight(
+            isInner: model.isInner, isLandscape: model.isLandscape,
+            showsTopGuide: model.showsTopGuide, placement: model.spikePlacement
+        )
         if boardHeight?.constant != height { boardHeight?.constant = height }
+    }
+
+    func cycleSpikePlacement() {
+        model.spikePlacement = model.spikePlacement.next
+        UserDefaults.standard.set(model.spikePlacement.rawValue, forKey: "spikePlacement")
+        updateBoardHeight()
     }
 
     func perform(_ action: KeyAction) {
@@ -252,6 +272,7 @@ private final class BoardModel {
     var showsTopGuide = false
     var isComposing = false
     var isAlphabet = false
+    var spikePlacement: SpikePlacement = .full
     var candidates: [String] = []
     var highlightedCandidate: String?
 }
@@ -271,6 +292,8 @@ private struct ExtensionBoard: View {
             globe: model.showsGlobe ? AnyView(GlobeButton(controller: controller)) : nil,
             showsTopGuide: model.showsTopGuide,
             onTopGuideChange: { controller?.setTopGuideVisible($0) },
+            placement: model.spikePlacement,
+            onPlacementCycle: { controller?.cycleSpikePlacement() },
             perform: { controller?.perform($0) }
         )
         .frame(maxHeight: .infinity, alignment: .top)
