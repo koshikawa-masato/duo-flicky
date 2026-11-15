@@ -15,6 +15,7 @@ struct DuoFlickyApp: App {
 
 private struct SetupView: View {
     @State private var testText = ""
+    @FocusState private var testFieldFocused: Bool
 
     var body: some View {
         Form {
@@ -30,6 +31,15 @@ private struct SetupView: View {
             Section("試し入力") {
                 TextField("ここをタップして入力", text: $testText, axis: .vertical)
                     .lineLimit(2...4)
+                    .focused($testFieldFocused)
+            }
+        }
+        // Simulator harness: `simctl launch ... -autofocusTestField`
+        // summons the keyboard without needing a tap, so the
+        // extension's appearance can be checked in the simulator.
+        .onAppear {
+            if ProcessInfo.processInfo.arguments.contains("-autofocusTestField") {
+                testFieldFocused = true
             }
         }
     }

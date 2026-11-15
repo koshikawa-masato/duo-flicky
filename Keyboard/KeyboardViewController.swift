@@ -19,6 +19,10 @@ final class KeyboardViewController: UIInputViewController {
            let saved = SpikePlacement(rawValue: raw) {
             model.spikePlacement = saved
         }
+        if let raw = UserDefaults.standard.string(forKey: "guideMode"),
+           let saved = GuideMode(rawValue: raw) {
+            model.guideMode = saved
+        }
 
         // Phase 0 spike: clear every background the extension controls,
         // so any opaque layer left on the empty half is the system's,
@@ -66,33 +70,6 @@ final class KeyboardViewController: UIInputViewController {
         if model.showsGlobe != needsInputModeSwitchKey {
             model.showsGlobe = needsInputModeSwitchKey
         }
-        updateDebugInfo()
-    }
-
-    // Diagnostic (builds 7-9): find a signal that distinguishes the
-    // presentations where guide drawing above the frame renders
-    // (full-screen app) from those where it is clipped (Split View),
-    // so the guide can float in the first and stay inside in the
-    // second. Build 8 result: window class (_UIHostedWindow),
-    // headroom, size classes, ancestor clipping and window origin
-    // were ALL identical in both presentations. Remaining
-    // candidates: the window size and the scene coordinate space
-    // (the view's frame within the scene).
-    private func updateDebugInfo() {
-        guard let window = view.window else { return }
-        let scene = window.windowScene
-        let sceneBounds = scene?.coordinateSpace.bounds ?? .zero
-        let viewInScene = scene.map {
-            $0.coordinateSpace.convert(view.bounds, from: view.coordinateSpace)
-        } ?? .zero
-        let text = String(
-            format: "SZ:%.0fx%.0f SB:%.0fx%.0f\nSV:%.0f,%.0f %.0fx%.0f",
-            window.frame.width, window.frame.height,
-            sceneBounds.width, sceneBounds.height,
-            viewInScene.origin.x, viewInScene.origin.y,
-            viewInScene.width, viewInScene.height
-        )
-        if model.debugText != text { model.debugText = text }
     }
 
     override func textDidChange(_ textInput: UITextInput?) {
@@ -129,6 +106,11 @@ final class KeyboardViewController: UIInputViewController {
         model.spikePlacement = model.spikePlacement.next
         UserDefaults.standard.set(model.spikePlacement.rawValue, forKey: "spikePlacement")
         updateBoardHeight()
+    }
+
+    func cycleGuideMode() {
+        model.guideMode = model.guideMode.next
+        UserDefaults.standard.set(model.guideMode.rawValue, forKey: "guideMode")
     }
 
     func perform(_ action: KeyAction) {
@@ -299,8 +281,8 @@ private final class BoardModel {
     var showsTopGuide = false
     var isComposing = false
     var isAlphabet = false
-    var debugText = ""
     var spikePlacement: SpikePlacement = .full
+    var guideMode: GuideMode = .floating
     var candidates: [String] = []
     var highlightedCandidate: String?
 }
@@ -319,10 +301,11 @@ private struct ExtensionBoard: View {
             highlightedCandidate: model.highlightedCandidate,
             globe: model.showsGlobe ? AnyView(GlobeButton(controller: controller)) : nil,
             showsTopGuide: model.showsTopGuide,
-            debugText: model.debugText,
             onTopGuideChange: { controller?.setTopGuideVisible($0) },
             placement: model.spikePlacement,
             onPlacementCycle: { controller?.cycleSpikePlacement() },
+            guideMode: model.guideMode,
+            onGuideModeCycle: { controller?.cycleGuideMode() },
             perform: { controller?.perform($0) }
         )
         .frame(maxHeight: .infinity, alignment: .top)

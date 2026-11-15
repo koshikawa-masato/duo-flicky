@@ -159,6 +159,42 @@ enum SpikePlacement: String, CaseIterable {
     var isHalf: Bool { self != .full }
 }
 
+/// How flick guides are drawn when the top row's guide would cross
+/// the keyboard frame's top edge. Automatic switching is impossible:
+/// diagnostic builds 7-9 (2026-11-15) showed every metric visible
+/// inside the extension (window class and size, scene bounds, the
+/// view's frame within the scene, size classes, ancestor clipping)
+/// is identical between full-screen and Split View, because the
+/// hosted keyboard window is scene-level and never reflects the host
+/// app's pane. So the user picks: float above the frame (renders
+/// over full-screen apps; the system clips it in Split View) or keep
+/// the whole guide inside the frame.
+enum GuideMode: String, CaseIterable {
+    case floating
+    case inFrame
+
+    var next: GuideMode {
+        switch self {
+        case .floating: .inFrame
+        case .inFrame: .floating
+        }
+    }
+
+    var label: String {
+        switch self {
+        case .floating: "浮上"
+        case .inFrame: "枠内"
+        }
+    }
+
+    var name: String {
+        switch self {
+        case .floating: "浮かせる"
+        case .inFrame: "枠内に収める"
+        }
+    }
+}
+
 enum DuoDisplay {
     static func isInner(nativeSize: CGSize) -> Bool {
         let shortSide = min(nativeSize.width, nativeSize.height)

@@ -8,11 +8,11 @@ struct FlickBoard: View {
     static let height = headerHeight + 4 * rowHeight + 4 * gap + 2 * padding
 
     // How far above the board's top edge flick guides may draw in
-    // landscape, where the top row sits flush with the frame. The
-    // frame itself never resizes and reserves no margin; whether the
-    // overflow actually renders depends on the presentation context
-    // (it renders over a full-screen app; it was clipped in one
-    // split-with-home-screen case), which the device checks map out.
+    // landscape when the guide mode is "floating", where the top row
+    // sits flush with the frame. The frame itself never resizes and
+    // reserves no margin; the overflow renders over a full-screen
+    // app but is clipped by the system in Split View, which is why
+    // the mode is a manual choice (see GuideMode).
     private static let landscapeGuideOverflow: CGFloat = 54
 
     static func innerHeight(landscape: Bool, showsTopGuide: Bool = false) -> CGFloat {
@@ -40,18 +40,22 @@ struct FlickBoard: View {
     let highlightedCandidate: String?
     var globe: AnyView? = nil
     var showsTopGuide = false
-    var debugText = ""
     var onTopGuideChange: (Bool) -> Void = { _ in }
     var placement: SpikePlacement = .full
     var onPlacementCycle: () -> Void = {}
+    var guideMode: GuideMode = .floating
+    var onGuideModeCycle: () -> Void = {}
     let perform: (KeyAction) -> Void
 
-    // Drawing bounds for flick guides. In landscape they extend
-    // above the board so the top row's up petal and bubble can float
-    // over the app, as the user wants; the frame never moves and no
-    // margin is reserved for this.
+    // Drawing bounds for flick guides. In "floating" mode they
+    // extend above the board in landscape so the top row's up petal
+    // and bubble can float over the app; in "in-frame" mode they are
+    // exactly the board, and the guides shift or clamp to stay
+    // inside. The frame never moves and no margin is reserved.
     private func guideDrawBounds(in size: CGSize) -> CGRect {
-        guard isInner && isLandscape else { return CGRect(origin: .zero, size: size) }
+        guard guideMode == .floating, isInner, isLandscape else {
+            return CGRect(origin: .zero, size: size)
+        }
         let overflow = Self.landscapeGuideOverflow
         return CGRect(x: 0, y: -overflow, width: size.width, height: size.height + overflow)
     }
@@ -78,7 +82,8 @@ struct FlickBoard: View {
                 ForEach(guides) { guide in
                     FlickGuide(
                         guide: guide, keyFrame: geometry[guide.anchor],
-                        bounds: guideDrawBounds(in: geometry.size)
+                        bounds: guideDrawBounds(in: geometry.size),
+                        shiftsToFit: guideMode == .inFrame
                     )
                 }
             }
@@ -89,19 +94,6 @@ struct FlickBoard: View {
             }
         }
         .onDisappear { onTopGuideChange(false) }
-        .overlay(alignment: .topLeading) {
-            // Diagnostic readout (builds 7-8, temporary). Large on
-            // purpose: the build 7 readout was illegible in the
-            // downscaled screenshots the user sends.
-            if !debugText.isEmpty {
-                Text(debugText)
-                    .font(.system(size: 17, weight: .bold, design: .monospaced))
-                    .foregroundStyle(.yellow)
-                    .padding(4)
-                    .background(.black)
-                    .allowsHitTesting(false)
-            }
-        }
     }
 
     private var innerBoard: some View {
@@ -189,6 +181,21 @@ struct FlickBoard: View {
                 .buttonStyle(.plain)
                 .frame(height: rowHeight)
                 .accessibilityLabel("キーボード配置を切り替え、現在は\(placement.label)")
+                // Guide display: float above the frame or keep inside
+                // it. Automatic switching is impossible (see
+                // GuideMode), so this is a manual cycle like the
+                // placement, and persisted the same way.
+                Button {
+                    onGuideModeCycle()
+                } label: {
+                    Text(guideMode.label)
+                        .font(.caption2)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(keyColor, in: .rect(cornerRadius: 10))
+                }
+                .buttonStyle(.plain)
+                .frame(height: rowHeight)
+                .accessibilityLabel("ガイド表示を切り替え、現在は\(guideMode.name)")
             }
         }
     }
@@ -466,6 +473,11 @@ private struct FlickGuide: View {
     let guide: FlickGuideState
     let keyFrame: CGRect
     let bounds: CGRect
+    // In-frame guide mode: the whole held cross shifts rigidly so
+    // every petal stays inside the bounds (build 5's approach). In
+    // floating mode the cross stays centred on the key and the
+    // extended bounds give the petals room above the frame.
+    var shiftsToFit = false
 
     var body: some View {
         if guide.isHeld {
@@ -536,11 +548,26 @@ private struct FlickGuide: View {
         }
     }
 
+    private var crossShift: CGSize {
+        guard shiftsToFit else { return .zero }
+        var dx: CGFloat = 0
+        var dy: CGFloat = 0
+        let left = keyFrame.minX - (keyFrame.width + 4)
+        let right = keyFrame.maxX + (keyFrame.width + 4)
+        let top = keyFrame.minY - (keyFrame.height + 4)
+        let bottom = keyFrame.maxY + (keyFrame.height + 4)
+        if left < bounds.minX { dx = bounds.minX - left }
+        if right > bounds.maxX { dx = bounds.maxX - right }
+        if top < bounds.minY { dy = bounds.minY - top }
+        if bottom > bounds.maxY { dy = bounds.maxY - bottom }
+        return CGSize(width: dx, height: dy)
+    }
+
     private func frame(for direction: FlickDirection) -> CGRect {
         let offset = offset(for: direction)
         let proposed = keyFrame.offsetBy(
-            dx: offset.width * (keyFrame.width + 4),
-            dy: offset.height * (keyFrame.height + 4)
+            dx: offset.width * (keyFrame.width + 4) + crossShift.width,
+            dy: offset.height * (keyFrame.height + 4) + crossShift.height
         )
         return proposed.intersection(bounds)
     }
