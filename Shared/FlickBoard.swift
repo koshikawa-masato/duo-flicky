@@ -7,12 +7,6 @@ struct FlickBoard: View {
     private static let gap: CGFloat = 5
     static let height = headerHeight + 4 * rowHeight + 4 * gap + 2 * padding
 
-    // How far above the board's top edge flick guides may draw in
-    // landscape, where the top row sits flush with the frame. The
-    // frame itself never resizes and reserves no margin for this;
-    // the guide simply overlaps the app above the keyboard.
-    private static let landscapeGuideOverflow: CGFloat = 54
-
     static func innerHeight(landscape: Bool, showsTopGuide: Bool = false) -> CGFloat {
         landscape ? 225 : 286
     }
@@ -43,13 +37,14 @@ struct FlickBoard: View {
     var onPlacementCycle: () -> Void = {}
     let perform: (KeyAction) -> Void
 
-    // Drawing bounds for flick guides. In landscape they extend above
-    // the board so the top row's up petal and bubble have somewhere to
-    // go without the frame moving or carrying a permanent margin.
+    // Drawing bounds for flick guides: exactly the board. Drawing
+    // above the frame is clipped by the system (verified on a real
+    // device with build 4, where the top row's up petal vanished),
+    // and resizing or reserving margin is not acceptable either, so
+    // guides stay inside and shift as a whole when they would
+    // overflow an edge (see FlickGuide.crossShift).
     private func guideDrawBounds(in size: CGSize) -> CGRect {
-        guard isInner && isLandscape else { return CGRect(origin: .zero, size: size) }
-        let overflow = Self.landscapeGuideOverflow
-        return CGRect(x: 0, y: -overflow, width: size.width, height: size.height + overflow)
+        CGRect(origin: .zero, size: size)
     }
 
     var body: some View {
@@ -519,11 +514,29 @@ private struct FlickGuide: View {
         }
     }
 
+    // The whole cross shifts rigidly so every petal stays inside the
+    // board: for an edge key the cross no longer sits exactly on the
+    // key, but all five outputs remain fully visible and neither the
+    // frame nor the keys ever move.
+    private var crossShift: CGSize {
+        var dx: CGFloat = 0
+        var dy: CGFloat = 0
+        let left = keyFrame.minX - (keyFrame.width + 4)
+        let right = keyFrame.maxX + (keyFrame.width + 4)
+        let top = keyFrame.minY - (keyFrame.height + 4)
+        let bottom = keyFrame.maxY + (keyFrame.height + 4)
+        if left < bounds.minX { dx = bounds.minX - left }
+        if right > bounds.maxX { dx = bounds.maxX - right }
+        if top < bounds.minY { dy = bounds.minY - top }
+        if bottom > bounds.maxY { dy = bounds.maxY - bottom }
+        return CGSize(width: dx, height: dy)
+    }
+
     private func frame(for direction: FlickDirection) -> CGRect {
         let offset = offset(for: direction)
         let proposed = keyFrame.offsetBy(
-            dx: offset.width * (keyFrame.width + 4),
-            dy: offset.height * (keyFrame.height + 4)
+            dx: offset.width * (keyFrame.width + 4) + crossShift.width,
+            dy: offset.height * (keyFrame.height + 4) + crossShift.height
         )
         return proposed.intersection(bounds)
     }
